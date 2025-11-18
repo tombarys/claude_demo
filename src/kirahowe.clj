@@ -39,3 +39,25 @@
                   ["bill_length_mm" "bill_depth_mm"
                    "flipper_length_mm" "body_mass_g"]
                   {:target-columns "measurement" :value-column-name "value"})
+
+;; ## Find the penguin with the lowest body mass by species
+;;
+;; Combines grouping and aggregation to find minimum values per group.
+;;
+;; Steps:
+;; 1. tc/group-by ["species"] - Groups all penguins by their species
+;; 2. tc/aggregate - Computes aggregated values for each group
+;; 3. tcc/drop-missing - Removes nil values from body_mass_g column
+;; 4. tcc/min - Finds the minimum value from the remaining values
+;;
+;; Result:
+;; species    | lowest_body_mass_g
+;; Adelie     | 2850
+;; Chinstrap  | 2700
+;; Gentoo     | 3950
+
+(-> ds
+    (tc/group-by ["species"])
+    (tc/aggregate {"lowest_body_mass_g" #(->> (% "body_mass_g")
+                                              tcc/drop-missing
+                                              (apply tcc/min))}))
