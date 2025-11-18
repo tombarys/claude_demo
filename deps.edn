@@ -1,0 +1,4 @@
+{:deps {org.clojure/clojure {:mvn/version "1.12.0"}
+        nrepl/nrepl {:mvn/version "1.0.0"}
+        scicloj/tablecloth {:mvn/version "7.062"}}
+ :paths ["src"]}
